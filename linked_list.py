@@ -1,105 +1,98 @@
 class Node:
-    def __init__(self, data):
+    def __init__(self, data=None):
         self.data = data
         self.next = None
-
 class LinkedList:
     def __init__(self):
         self.head = None
-
-    # Другие методы класса LinkedList ...
+        self.length = 0
 
     def __len__(self):
-        current = self.head
-        count = 0
-        while current:
-            count += 1
-            current = current.next
-        return count
+        return self.length
+
+    def append_begin(self, data):
+        new_node = Node(data)
+        new_node.next = self.head
+        self.head = new_node
+        self.length += 1
+
+    def append_end(self, data):
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+        else:
+            last = self.head
+            while last.next:
+                last = last.next
+            last.next = new_node
+        self.length += 1
 
     def remove_first(self):
-        if self.head:
-            self.head = self.head.next
-        else:
-            raise ValueError("Невозможно удалить из пустого списка")
+        if not self.head:
+            raise ValueError('Linked list is empty')
+        self.head = self.head.next
+        self.length -= 1
 
     def remove_last(self):
         if not self.head:
-            raise ValueError("Невозможно удалить из пустого списка")
+            raise ValueError('Linked list is empty')
         if not self.head.next:
             self.head = None
-            return
-        current = self.head
-        while current.next.next:
-            current = current.next
-        current.next = None
+        else:
+            second_last = self.head
+            while second_last.next.next:
+                second_last = second_last.next
+            second_last.next = None
+        self.length -= 1
 
     def remove_at(self, index):
-        if index < 0 or (index >= len(self)):
-            raise ValueError("Индекс выходит за пределы диапазона")
+        if index < 0 or index >= self.length:
+            raise ValueError('Invalid index')
         if index == 0:
-            self.remove_first()
-            return
-        current = self.head
-        for _ in range(index - 1):
-            current = current.next
-        current.next = current.next.next
+            self.head = self.head.next
+        else:
+            current = self.head
+            for _ in range(index - 1):
+                current = current.next
+            current.next = current.next.next
+        self.length -= 1
 
     def remove_first_value(self, value):
+        if not self.head:
+            raise ValueError('Linked list is empty')
+        
+        if self.head.data == value:
+            self.head = self.head.next
+            self.length -= 1
+            return
+        
         current = self.head
-        previous = None
-        while current:
-            if current.data == value:
-                if previous:
-                    previous.next = current.next
-                else:
-                    self.head = current.next
+        while current.next:
+            if current.next.data == value:
+                current.next = current.next.next
+                self.length -= 1
                 return
-            previous = current
             current = current.next
-        raise ValueError("Индекс выходит за пределы диапазона")
+        raise ValueError('Value not found')
 
     def remove_last_value(self, value):
+        if not self.head:
+            raise ValueError('Linked list is empty')
+        
+        if self.head.data == value:
+            self.head = self.head.next
+            self.length -= 1
+            return
+        
         current = self.head
-        previous = None
-        last_match = None
-        while current:
-            if current.data == value:
-                last_match = current
-            previous = current
+        while current.next:
+            if current.next.data == value and not current.next.next:
+                current.next = None
+                self.length -= 1
+                return
+            if current.next.data == value:
+                current.next = current.next.next
+                self.length -= 1
+                return
             current = current.next
-        if last_match:
-            if previous:
-                previous.next = last_match.next
-            else:
-                self.head = last_match.next
-        else:
-            raise ValueError("Число не найдено!")
-
-
-
-#Создаем экземпляр класса LinkedList
-my_list = LinkedList()
-
-# Добавляем элементы в список (для примера)
-my_list.add(1)
-my_list.add(2)
-my_list.add(3)
-
-# Используем метод __len__ для получения количества элементов
-print(len(my_list))  # Выведет: 3
-
-# Удаляем первый элемент
-my_list.remove_first()
-
-# Удаляем последний элемент
-my_list.remove_last()
-
-# Удаляем элемент по индексу
-my_list.remove_at(0)  # Удалит первый (единственный) элемент
-
-# Удаляем первое найденное значение
-my_list.remove_first_value(2)
-
-# Удаляем последнее найденное значение
-my_list.remove_last_value(4)
+        raise ValueError('Value not found')
