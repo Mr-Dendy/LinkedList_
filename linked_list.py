@@ -29,13 +29,13 @@ class LinkedList:
 
     def remove_first(self):
         if not self.head:
-            raise ValueError('Linked list is empty')
+            raise ValueError('Связанный список пуст')
         self.head = self.head.next
         self.length -= 1
 
     def remove_last(self):
         if not self.head:
-            raise ValueError('Linked list is empty')
+            raise ValueError('Связанный список пуст')
         if not self.head.next:
             self.head = None
         else:
@@ -59,7 +59,7 @@ class LinkedList:
 
     def remove_first_value(self, value):
         if not self.head:
-            raise ValueError('Linked list is empty')
+            raise ValueError('Связанный список пуст')
         
         if self.head.data == value:
             self.head = self.head.next
@@ -73,11 +73,11 @@ class LinkedList:
                 self.length -= 1
                 return
             current = current.next
-        raise ValueError('Value not found')
+        raise ValueError('Значение не найдено')
 
     def remove_last_value(self, value):
         if not self.head:
-            raise ValueError('Linked list is empty')
+            raise ValueError('Связанный список пуст')
         
         if self.head.data == value:
             self.head = self.head.next
@@ -95,4 +95,4 @@ class LinkedList:
                 self.length -= 1
                 return
             current = current.next
-        raise ValueError('Value not found')
+        raise ValueError('Значение не найдено')
